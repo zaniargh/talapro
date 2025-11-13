@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = require("prisma/config");
+const dotenv_1 = require("dotenv");
+const path_1 = require("path");
+(0, dotenv_1.config)({ path: (0, path_1.resolve)(__dirname, ".env"), override: true });
+exports.default = (0, config_1.defineConfig)({
+    schema: "prisma/schema.prisma",
+    migrations: {
+        path: "prisma/migrations",
+    },
+    engine: "classic",
+    datasource: {
+        url: (0, config_1.env)("DATABASE_URL"),
+    },
+});
+//# sourceMappingURL=prisma.config.js.map

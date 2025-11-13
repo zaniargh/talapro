@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: talapro-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zanyar
+      POSTGRES_PASSWORD: postgre123
+      POSTGRES_DB: talapro_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-09-22T00-33-43Z
+    container_name: talapro-minio
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: talapro
+      MINIO_ROOT_PASSWORD: talapro_minio_password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+volumes:
+  pgdata:
+  minio-data:
