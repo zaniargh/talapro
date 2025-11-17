@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const client_1 = require("@prisma/client");
 const bcrypt = __importStar(require("bcrypt"));
 let UsersService = class UsersService {
     prisma;
@@ -60,9 +61,57 @@ let UsersService = class UsersService {
             data: {
                 email: params.email,
                 name: params.name,
-                role: params.role ?? 'TENANT_ADMIN',
+                role: params.role ?? client_1.Role.CUSTOMER,
                 passwordHash: hash,
                 tenantId: params.tenantId ?? null,
+                phone: params.phone ?? null,
+                address: params.address ?? null,
+            },
+        });
+    }
+    async findAllCustomers() {
+        return this.prisma.user.findMany({
+            where: {
+                role: client_1.Role.CUSTOMER,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                address: true,
+                createdAt: true,
+                tenant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+    }
+    async findById(id) {
+        return this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                address: true,
+                createdAt: true,
+                role: true,
+                tenant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                    },
+                },
             },
         });
     }

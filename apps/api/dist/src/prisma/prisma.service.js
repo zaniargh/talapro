@@ -7,10 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrismaService = void 0;
+const dotenv_1 = require("dotenv");
+const path_1 = require("path");
+(0, dotenv_1.config)({ path: (0, path_1.resolve)(__dirname, '../../.env'), override: true });
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     async onModuleInit() {
+        console.log('[Prisma] DATABASE_URL:', process.env.DATABASE_URL);
         await this.$connect();
     }
     async enableShutdownHooks(app) {

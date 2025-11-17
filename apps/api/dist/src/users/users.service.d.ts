@@ -1,4 +1,5 @@
 import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '@prisma/client';
 export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
@@ -9,6 +10,8 @@ export declare class UsersService {
         role: import("@prisma/client").$Enums.Role;
         name: string;
         passwordHash: string;
+        phone: string | null;
+        address: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null>;
@@ -16,8 +19,10 @@ export declare class UsersService {
         email: string;
         name: string;
         password: string;
-        role?: any;
+        role?: Role;
         tenantId?: string | null;
+        phone?: string;
+        address?: string;
     }): Promise<{
         id: string;
         email: string;
@@ -25,7 +30,36 @@ export declare class UsersService {
         role: import("@prisma/client").$Enums.Role;
         name: string;
         passwordHash: string;
+        phone: string | null;
+        address: string | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
+    findAllCustomers(): Promise<{
+        id: string;
+        email: string;
+        name: string;
+        phone: string | null;
+        address: string | null;
+        createdAt: Date;
+        tenant: {
+            id: string;
+            name: string;
+            slug: string;
+        } | null;
+    }[]>;
+    findById(id: string): Promise<{
+        id: string;
+        email: string;
+        role: import("@prisma/client").$Enums.Role;
+        name: string;
+        phone: string | null;
+        address: string | null;
+        createdAt: Date;
+        tenant: {
+            id: string;
+            name: string;
+            slug: string;
+        } | null;
+    } | null>;
 }
